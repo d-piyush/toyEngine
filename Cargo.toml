@@ -1,0 +1,6 @@
+[package]
+name = "toy_engine"
+version = "0.1.0"
+authors = ["Piyush Deshpande <d.piyush@rocketmail.com>"]
+
+[dependencies]
