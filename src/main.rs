@@ -1,9 +1,16 @@
 pub mod dom;
+pub mod parser;
 
 fn main() {
-    let mut root = dom::elem(Vec::new(), "html".to_string(), dom::AttrMap::new());
-    let mut body = dom::elem(Vec::new(), "body".to_string(), dom::AttrMap::new());
-    body.children.push(dom::text("Hello World".to_string()));
-    root.children.push(body);
+    let html: String = "<html>
+                            <body>
+                                <h1>Title</h1>
+                                <div id='main' class='test'>
+                                    <p>Hello <em>world</em>!</p>
+                                </div>
+                            </body>
+                        </html>".to_string();
+
+    let root = parser::parse(html);
     root.print();
 }
