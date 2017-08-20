@@ -12,14 +12,14 @@ fn main() {
     root.print();
 }
 
-fn file_to_string(file_path :String) -> String {
+fn file_to_string(file_path: String) -> String {
     let mut file = match File::open(file_path) {
         Err(why) => panic!("couldn't open {}", why.description()),
         Ok(file) => file,
     };
 
     let mut html_string = String::new();
-    match file.read_to_string(&mut html_string){
+    match file.read_to_string(&mut html_string) {
         Err(why) => panic!("couldn't read {}", why.description()),
         Ok(_) => println!("File read success!"),
     };

@@ -4,7 +4,10 @@ use std::collections::HashMap;
 
 // Parse an HTML document and return the root element
 pub fn parse(source: String) -> dom::Node {
-    let mut nodes = Parser {pos: 0, input: source }.parse_nodes();
+    let mut nodes = Parser {
+        pos: 0,
+        input: source,
+    }.parse_nodes();
 
     if nodes.len() == 1 {
         nodes.swap_remove(0)
@@ -27,7 +30,7 @@ impl Parser {
 
     // Check if next characters starts with given string
     fn starts_with(&self, s: &str) -> bool {
-        self.input[self.pos ..].starts_with(s)
+        self.input[self.pos..].starts_with(s)
     }
 
     fn eof(&self) -> bool {
@@ -45,7 +48,9 @@ impl Parser {
 
     // consume chars untill test returns false
     fn consume_while<F>(&mut self, test: F) -> String
-            where F: Fn(char) -> bool {
+    where
+        F: Fn(char) -> bool,
+    {
         let mut result = String::new();
         while !self.eof() && test(self.next_char()) {
             result.push(self.consume_char());
@@ -58,11 +63,11 @@ impl Parser {
         self.consume_while(char::is_whitespace);
     }
 
-    //Parse a tag or attribute name 
+    //Parse a tag or attribute name
     fn parse_tag_name(&mut self) -> String {
         self.consume_while(|c| match c {
             'a'...'z' | 'A'...'Z' | '0'...'9' => true,
-            _ => false
+            _ => false,
         })
     }
 
@@ -70,11 +75,11 @@ impl Parser {
     fn parse_node(&mut self) -> dom::Node {
         match self.next_char() {
             '<' => self.parse_element(),
-            _   => self.parse_text()
+            _ => self.parse_text(),
         }
     }
 
-    //Parse a text node 
+    //Parse a text node
     fn parse_text(&mut self) -> dom::Node {
         dom::text(self.consume_while(|c| c != '<'))
     }
@@ -95,7 +100,7 @@ impl Parser {
         assert!(self.parse_tag_name() == tag_name);
         assert!(self.consume_char() == '>');
 
-        return dom::elem(children, tag_name, attrs)
+        return dom::elem(children, tag_name, attrs);
     }
 
     // Parse a single attribute name=value pair
@@ -117,7 +122,7 @@ impl Parser {
 
     // Parse a list of attributes pair separated by whitespace
     fn parse_attributes(&mut self) -> dom::AttrMap {
-        let mut attributes  = HashMap::new();
+        let mut attributes = HashMap::new();
         loop {
             self.consume_whitespace();
             if self.next_char() == '>' {
